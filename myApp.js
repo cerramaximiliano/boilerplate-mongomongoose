@@ -14,7 +14,7 @@ const personSchema = new Schema({
 const Person = mongoose.model("Person", personSchema);
 
 const createAndSavePerson = (done) => {
-  var max = new Person({name: "Max Cerra", age: 39, favoriteFoods: ["meat", "fish", "fresh fruit"]});
+  const max = new Person({name: "Max Cerra", age: 39, favoriteFoods: ["meat", "fish", "fresh fruit"]});
   max.save(function(err, data) {
     if (err) return console.error(err);
     done(null, data)
@@ -22,7 +22,10 @@ const createAndSavePerson = (done) => {
 };
 
 const createManyPeople = (arrayOfPeople, done) => {
-  done(null /*, data*/);
+  Person.create(arrayOfPeople, function(err, data) {
+    if(err) return console.log(err);
+    done(null /*, data*/);
+  })
 };
 
 const findPeopleByName = (personName, done) => {
