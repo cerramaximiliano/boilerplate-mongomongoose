@@ -53,7 +53,7 @@ const findEditThenSave = (personId, done) => {
   const foodToAdd = "hamburger";
   const person = Person.findById(personId, function(err, data) {
     if(err) return console.log(err)
-    person.favoriteFoods.push(foodToAdd);
+    data.favoriteFoods.push(foodToAdd);
     person.save(function (err, data) {
       if(err) return console.log(err)
       done(null , data);
@@ -63,7 +63,7 @@ const findEditThenSave = (personId, done) => {
 
 const findAndUpdate = (personName, done) => {
   const ageToSet = 20;
-  Person.findAndUpdate({name: personName}, {age: ageToSet}, {new: true}, function(err, data) {
+  Person.findOneAndUpdate({name: personName}, {age: ageToSet}, {new: true}, function(err, data) {
     if(err)return console.log(err)
     done(null , data);
   })
@@ -89,8 +89,10 @@ const queryChain = (done) => {
   .sort('name')
   .limit(2)
   .select('name favoriteFoods')
-  .exec()
-  done(null , data);
+  .exec((err, data) => {
+    if(err) return console.log(err)
+    done(null , data);
+  })
 };
 
 /** **Well Done !!**
